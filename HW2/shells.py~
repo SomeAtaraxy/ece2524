@@ -1,0 +1,6 @@
+# ECE 2524 Homework 2 Problem 1 Collin Schumann
+with open('/etc/passwd', 'r') as f:
+    # or read it line by line
+    for line in f:
+        stuff = line.split(':')
+        print stuff[0] + '\t' + stuff[6]
