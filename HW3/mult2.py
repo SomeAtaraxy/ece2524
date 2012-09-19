@@ -26,7 +26,7 @@ if args.infile == sys.stdin:
             # Propmpt for an number to multiply
             number = raw_input()
         except EOFError:    # ^D specification
-            print '^D'
+            #print '^D'
             break   # Break out of while loop
 
         # Blank line specification
