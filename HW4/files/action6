@@ -1,0 +1,2 @@
+set Quantity=1 where PartID=R4700
+list all
