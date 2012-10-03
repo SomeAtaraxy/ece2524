@@ -14,9 +14,10 @@ args = parser.parse_args()
 
 if __name__=='__main__':
     data = []
+    outFile = args.data_file
 
     try:
-        for line in fileinput.input(args.data_file):
+        for line in fileinput.input(outFile):
             if not fileinput.isfirstline():
                 temp = line.split(":")
                 data.append([temp[0].strip(), temp[1].strip(),
@@ -35,28 +36,30 @@ if __name__=='__main__':
         linein = linein.split()
 
         try:
-            if linein[0] == "add":
+            if linein[0] == "add": # Add
                 data.append(functions.add_record(linein))
                 print "Added"
-            elif linein[0] == "remove":
+            elif linein[0] == "remove": # Remove
                 data = functions.remove_record(data, linein)
                 print "Removed"
-            elif linein[0] == "set":
+            elif linein[0] == "set": # Set
                 data = functions.set_record(data, linein)
                 print "Set"
             elif (linein[0], linein[1]) == ("list", "all"):
                 if len(linein) > 2:
-                    if linein[2] == "sort":
+                    if linein[2] == "sort": # List all sort
                         data, linein = functions.sort_record(data, linein)
                         functions.list_record(data, linein)
-                    else:
+                    else: # List all with
                         functions.list_record(data, linein)
-                else:
+                else: # List all
                     functions.list_record(data, linein)
-            else:
+            else: # No matching command with more than one argument
                 stderr.write("Invalid command: " + linein[0] +
                              " " + linein[1] + "\n")
                 exit(2)
-        except IndexError:
+
+            functions.toFile(data, outFile) # Update file
+        except IndexError: # No matching command with only one argument
             stderr.write("Invalid command: " + linein[0] + "\n")
             exit(2)

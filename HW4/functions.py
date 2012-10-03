@@ -1,4 +1,4 @@
-from sys import stderr,exit
+from sys import stdin,stderr,exit
 
 # Return a list to be appended to the main list
 # Note: Field and value pairs can be in any order
@@ -74,7 +74,7 @@ def set_record(data, linein):
 def list_record(data, linein):
     print 'DATA'
     print 'PartID'.ljust(8), 'Description'.ljust(34), \
-          'Footprint'.ljust(12), 'Quantity'
+          'Footprint'.ljust(11), 'Quantity'
 
     # Print matched value
     if len(linein) > 2:
@@ -84,17 +84,17 @@ def list_record(data, linein):
             if field == 'Quantity':
                 if int(val) == item[enum(field)]:
                     print item[0].ljust(8), item[1].ljust(34), \
-                        item[2].ljust(12), item[3]
+                        item[2].ljust(11), item[3]
             else:
                 if val == item[enum(field)]:
                     print item[0].ljust(8), item[1].ljust(34), \
-                        item[2].ljust(12), item[3]
+                        item[2].ljust(11), item[3]
 
     # Print entire list
     else:
         for item in data:
             print item[0].ljust(8), item[1].ljust(34), \
-                  item[2].ljust(12), item[3]
+                  item[2].ljust(11), item[3]
 
     print "."
     return
@@ -125,3 +125,24 @@ def enum(field):
     else:
         stderr.write("Invalid field: " + field + "\n")
         exit(2)
+
+# Write data to file
+def toFile(data, outFile):
+    outFile = open(outFile, 'w')
+    outFile.write('PartID'.ljust(9) + 'Description'.ljust(35) +
+                  'Footprint'.ljust(12) + 'Quantity\n')
+
+    temp = [None, None, None, 0]
+
+    for item in data:
+        # Copy data with format
+        temp[0] = item[0] + ':'
+        temp[1] = item[1] + ':'
+        temp[2] = item[2] + ':'
+        temp[3] = item[3]
+
+        # Print copy to file
+        outFile.write(temp[0].ljust(9) + temp[1].ljust(35) +
+                      temp[2].ljust(12) + str(temp[3]) + '\n')
+    outFile.close() # Close the file
+    return
