@@ -11,8 +11,6 @@ Process::Process(const std::vector<std::string> &args)
         exit(0);
     }
 
-
-
     if((m_pid = fork()) < 0)
     {
         // there was an error forking
@@ -22,6 +20,7 @@ Process::Process(const std::vector<std::string> &args)
     else if (m_pid == 0)
     {
         // Child
+
         errCheck1 = errCheck2 = 0;
         errCheck1 = dup2(readpipe[1],1);
         errCheck2 = dup2(writepipe[0],0);
@@ -31,6 +30,7 @@ Process::Process(const std::vector<std::string> &args)
             exit(0);
         }
 
+        // Close unused pipe ends
         errCheck1 = errCheck2 = 0;
         errCheck1 = close(readpipe[1]);
         errCheck2 = close(readpipe[0]);
@@ -40,6 +40,7 @@ Process::Process(const std::vector<std::string> &args)
             exit(0);
         }
 
+        // Close unused pipe ends
         errCheck1 = errCheck2 = 0;
         errCheck1 = close(writepipe[1]);
         errCheck2 = close(writepipe[0]);
@@ -49,12 +50,13 @@ Process::Process(const std::vector<std::string> &args)
             exit(0);
         }
 
+        // Convert vector<string> to vector<char*>
         std::vector<const char*> cargs;
         std::transform(args.begin(), args.end(), std::back_inserter(cargs),
                 [](const std::string s){return &s[0];});
-        cargs.push_back(NULL);
+        cargs.push_back(NULL); // execve() expects a NULL terminating array
 
-        char *charNULL[] = {(char*)0};
+        char *charNULL[] = {(char*)0}; // NULL array
         if(-1 == execve(const_cast<char*>(cargs[0]), charNULL, charNULL))
         {
             std::cerr << "Error with execve(): " << strerror(errno) << std::endl;
@@ -67,6 +69,7 @@ Process::Process(const std::vector<std::string> &args)
         // Parent
         std::cout << "Parent[" << getpid() << "] Process constructor" << std::endl;
 
+        // Close unused pipe ends
         errCheck1 = errCheck2 = 0;
         errCheck1 = close(writepipe[0]);
         errCheck2 = close(readpipe[1]);
@@ -81,6 +84,7 @@ Process::Process(const std::vector<std::string> &args)
             exit(0);
         }
 
+        // Open the read file descriptor for the parent
         m_pread = fdopen(readpipe[0], "r");
     }
 }
@@ -89,9 +93,11 @@ Process::Process(const std::vector<std::string> &args)
    insure that the child has terminated */
 Process::~Process()
 {
+    // Close remaining pipes
     close(writepipe[1]);
     close(readpipe[0]);
 
+    // Close the parent file descriptor
     fclose(m_pread);
 }
 
@@ -110,15 +116,18 @@ std::string Process::readline()
     size_t n = 100;
     ssize_t length = 0;
 
+    // Create the buffer
     readptr = (char*) malloc (n + 1);
-    length = getline(&readptr, &n, m_pread);
 
+    // Read a line from child
+    length = getline(&readptr, &n, m_pread);
     if(length == -1)
     {
         std::cerr << "Error with getline(): " <<strerror(errno) << std::endl;
         //exit(0);
     }
 
+    // Convert char array to string
     for(int i=0; i<length; i++)
         output += readptr[i];
 
