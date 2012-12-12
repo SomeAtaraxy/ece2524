@@ -1,0 +1,8 @@
+weapon:Revolver
+ammo:Revolver:2
+weapon:Shotgun
+ammo:Shotgun:4
+weapon:SniperRifle
+ammo:SniperRifle:1
+health:Food
+health:Water
