@@ -10,7 +10,7 @@ To run the program, navigate into the 'WDGame' directory in a terminal and type 
 ##Actions
 To determine actions available for the game, type 'help' while running the game.
 
-##Cheat code
+##Cheat Code
 	At the start screen, when prompted to press ENTER, you can type in
 	the following cheat code followed by an ENTER.
 
