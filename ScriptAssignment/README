@@ -1,0 +1,24 @@
+1. Why is this assignment relevent to an Intro to Unix course?
+
+This assignment is relevant to an Intro to Unix course, because it
+expands on the knowledge of the commands that we have already learned
+in this class. It allows the students to see that there are simple
+solutions to time consuming repetitive tasks.
+
+2. How should points be distributed for this assignment, i.e. what
+percentage should go to syntax, style, functionality, content, etc.
+If the solution fails to work at all (fails to compile, or fails to run)
+how should it be evaluated?
+
+It should be evaluated on the thought that went into the assignment
+rather than the solution. There was a point where I could not get all of
+the html tags out of the output and almost left them there. I know that
+if I could not have solved the problem, I would not have wanted points
+to be taken off, because a great deal of effort went into trying to
+solve that problem. A nice percent breakdown would be:
+
+20% for having at least a somewhat working solution
+40% for assignment idea and having practical uses
+30% for having a completed assignment.md file with little to no spelling
+	or grammar errors
+10% for completing this README file
